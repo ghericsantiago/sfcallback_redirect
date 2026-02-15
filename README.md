@@ -16,10 +16,17 @@ A simple GitHub Pages site that serves as a callback page for Salesforce connect
 https://[your-username].github.io/sfcallback_redirect/?redirect_url=https://example.com/callback
 ```
 
-### With URL Encoding
-If your redirect URL contains special characters, make sure to URL-encode it:
+### With Additional Parameters
+Any query parameters besides `redirect_url` will be automatically passed to the target website:
 ```
-https://[your-username].github.io/sfcallback_redirect/?redirect_url=https%3A%2F%2Fexample.com%2Fcallback%3Fparam%3Dvalue
+https://[your-username].github.io/sfcallback_redirect/?redirect_url=https://example.com/callback&code=abc123&state=xyz789
+```
+This will redirect to: `https://example.com/callback?code=abc123&state=xyz789`
+
+### With URL Encoding
+If your redirect URL or parameters contain special characters, make sure to URL-encode them:
+```
+https://[your-username].github.io/sfcallback_redirect/?redirect_url=https%3A%2F%2Fexample.com%2Fcallback&token=abc%2B123%3D
 ```
 
 ## Salesforce Connected App Configuration

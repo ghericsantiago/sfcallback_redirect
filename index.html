@@ -74,7 +74,7 @@
     </div>
 
     <script>
-        // Get redirect_url from query parameters
+        // Get all query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const redirectUrl = urlParams.get('redirect_url');
 
@@ -88,11 +88,28 @@
             }
         }
 
+        // Function to build final redirect URL with additional parameters
+        function buildFinalUrl(baseUrl, urlParams) {
+            const url = new URL(baseUrl);
+            
+            // Add all parameters except redirect_url
+            for (const [key, value] of urlParams.entries()) {
+                if (key !== 'redirect_url') {
+                    url.searchParams.append(key, value);
+                }
+            }
+            
+            return url.toString();
+        }
+
         // Handle redirect
         if (redirectUrl && isValidUrl(redirectUrl)) {
+            // Build final URL with all other parameters
+            const finalUrl = buildFinalUrl(redirectUrl, urlParams);
+            
             // Use a small delay to ensure the page loads
             setTimeout(() => {
-                window.location.href = decodeURIComponent(redirectUrl);
+                window.location.href = finalUrl;
             }, 100);
         } else {
             // Show error message
@@ -110,7 +127,7 @@
         // Optional: Log the callback for debugging (remove in production if privacy is a concern)
         console.log('Salesforce Callback Redirect');
         console.log('Timestamp:', new Date().toISOString());
-        console.log('Redirect URL:', redirectUrl ? '***' : 'MISSING');
+        console.log('Original Parameters:', Object.fromEntries(urlParams));
     </script>
 </body>
 </html>
