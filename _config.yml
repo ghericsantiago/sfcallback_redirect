@@ -1,0 +1,13 @@
+# GitHub Pages Configuration
+theme: null
+# Enable HTTPS
+url: "https://[your-username].github.io"
+# Base URL for the site
+baseurl: "/sfcallback_redirect"
+# Disable Jekyll processing if not using any Jekyll features
+# Keep empty to allow Jekyll to process the site
+# If you want to use Jekyll, set to a valid theme
+
+# Site metadata
+title: Salesforce Callback Redirect
+description: A callback page for Salesforce connected apps

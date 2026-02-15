@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce Callback Redirect</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+            margin: 0 0 1rem 0;
+        }
+        p {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error {
+            color: #d32f2f;
+            padding: 1rem;
+            background: #ffebee;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Redirecting...</h1>
+        <p>Processing Salesforce callback</p>
+        <div class="spinner"></div>
+        <div class="error" id="error">
+            <p id="errorText">Unable to redirect. Please check the redirect URL and try again.</p>
+            <p><a href="/" onclick="location.reload()">Go Back</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Get redirect_url from query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectUrl = urlParams.get('redirect_url');
+
+        // Function to validate URL
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Handle redirect
+        if (redirectUrl && isValidUrl(redirectUrl)) {
+            // Use a small delay to ensure the page loads
+            setTimeout(() => {
+                window.location.href = decodeURIComponent(redirectUrl);
+            }, 100);
+        } else {
+            // Show error message
+            document.querySelector('.container p').style.display = 'none';
+            document.querySelector('.spinner').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            
+            if (!redirectUrl) {
+                document.getElementById('errorText').textContent = 'No redirect URL provided. Please check the callback URL.';
+            } else {
+                document.getElementById('errorText').textContent = 'Invalid redirect URL. Please check the URL format.';
+            }
+        }
+
+        // Optional: Log the callback for debugging (remove in production if privacy is a concern)
+        console.log('Salesforce Callback Redirect');
+        console.log('Timestamp:', new Date().toISOString());
+        console.log('Redirect URL:', redirectUrl ? '***' : 'MISSING');
+    </script>
+</body>
+</html>
