@@ -1,11 +1,11 @@
 # Salesforce Connected App Callback Redirect
 
-A simple GitHub Pages site that serves as a callback page for Salesforce connected apps. This page handles OAuth redirects by accepting a `redirect_url` parameter and redirecting users to the specified URL.
+A simple GitHub Pages site that serves as a callback page for Salesforce connected apps. This page handles OAuth redirects by accepting a `state` parameter and redirecting users to the specified URL.
 
 ## How It Works
 
 1. Salesforce connected app redirects users to this callback page with a query parameter
-2. The page extracts the `redirect_url` parameter from the query string
+2. The page extracts the `state` parameter from the query string
 3. The URL is validated for security
 4. Users are automatically redirected to the provided URL
 
@@ -13,27 +13,27 @@ A simple GitHub Pages site that serves as a callback page for Salesforce connect
 
 ### Basic Redirect
 ```
-https://[your-username].github.io/sfcallback_redirect/?redirect_url=https://example.com/callback
+https://[your-username].github.io/sfcallback_redirect/?state=https://example.com/callback
 ```
 
 ### With Additional Parameters
-Any query parameters besides `redirect_url` will be automatically passed to the target website:
+Any query parameters besides `state` will be automatically passed to the target website:
 ```
-https://[your-username].github.io/sfcallback_redirect/?redirect_url=https://example.com/callback&code=abc123&state=xyz789
+https://[your-username].github.io/sfcallback_redirect/?state=https://example.com/callback&code=abc123&token=xyz789
 ```
-This will redirect to: `https://example.com/callback?code=abc123&state=xyz789`
+This will redirect to: `https://example.com/callback?code=abc123&token=xyz789`
 
 ### With URL Encoding
 If your redirect URL or parameters contain special characters, make sure to URL-encode them:
 ```
-https://[your-username].github.io/sfcallback_redirect/?redirect_url=https%3A%2F%2Fexample.com%2Fcallback&token=abc%2B123%3D
+https://[your-username].github.io/sfcallback_redirect/?state=https%3A%2F%2Fexample.com%2Fcallback&token=abc%2B123%3D
 ```
 
 ## Salesforce Connected App Configuration
 
 When setting up a Salesforce connected app, configure the callback URLs as:
 ```
-https://[your-username].github.io/sfcallback_redirect/?redirect_url=[your-final-redirect-url]
+https://[your-username].github.io/sfcallback_redirect/?state=[your-final-redirect-url]
 ```
 
 ## Features
@@ -66,7 +66,7 @@ This repository is ready to be deployed to GitHub Pages:
 
 ## Error Handling
 
-If an invalid or missing `redirect_url` is provided, the user will see an error message explaining:
+If an invalid or missing `state` is provided, the user will see an error message explaining:
 - If no redirect URL was provided
 - If the redirect URL format is invalid
 

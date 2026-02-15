@@ -76,7 +76,7 @@
     <script>
         // Get all query parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const redirectUrl = urlParams.get('redirect_url');
+        const redirectUrl = urlParams.get('state');
 
         // Function to validate URL
         function isValidUrl(string) {
@@ -92,9 +92,9 @@
         function buildFinalUrl(baseUrl, urlParams) {
             const url = new URL(baseUrl);
             
-            // Add all parameters except redirect_url
+            // Add all parameters except state
             for (const [key, value] of urlParams.entries()) {
-                if (key !== 'redirect_url') {
+                if (key !== 'state') {
                     url.searchParams.append(key, value);
                 }
             }
